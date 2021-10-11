@@ -2,8 +2,7 @@
 Butterchurn Plugin for Apple Music Electron
 ...also a ***very*** basic EQ
 
-**This plugin is not officially maintained by the Apple Music Electron team**
-**Your mileage with this plugin may vary**
+**This plugin is not officially maintained by the Apple Music Electron team, it is simply a test of the new plugin system so your mileage with this plugin may vary.**
 
 [Prerequsites]
 * Latest commit of Apple Music Electron 3.0.0 or newer
