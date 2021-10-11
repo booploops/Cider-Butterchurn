@@ -4,14 +4,7 @@
  * @description My plugin's description
  */
 
-/** 
- * Using this starter class is optional, 
- * hovever all code in this script will only be executed when the web player has loaded.
- * 
- * For documented available ipcRenderer messages refer to: <link here>
- */
-
-class Visualizer extends AMEPlugin {
+class Visualizer extends AMEPluginHelper {
     Start() {
         // Code here will execute once the web player has loaded
         console.log("Butterchurn Visualizer Plugin")
@@ -43,7 +36,7 @@ class Visualizer extends AMEPlugin {
 
         location.appendChild(scriptTag)
     }
-    OnSongChange() {
+    OnPlaybackStateChanged() {
         if (!_amOT.fInit) {
             _amOT.init()
         }
