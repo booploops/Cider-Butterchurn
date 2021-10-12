@@ -1,5 +1,4 @@
-# AME-Butterchurn
-Butterchurn Plugin for Apple Music Electron
+# Butterchurn Plugin for Apple Music Electron
 ...also a ***very*** basic EQ
 
 **This plugin is not officially maintained by the Apple Music Electron team, it is simply a test of the new plugin system so your mileage with this plugin may vary.**
