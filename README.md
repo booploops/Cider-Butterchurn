@@ -1,3 +1,7 @@
+<div align="center">
+ <img src="https://i.imgur.com/U7WTfOG.png" style="width: 600px;"/> 
+ </div>
+
 # Butterchurn Plugin for Apple Music Electron
 ...also a ***very*** basic EQ
 
