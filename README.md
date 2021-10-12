@@ -14,5 +14,8 @@ Butterchurn Plugin for Apple Music Electron
 * Download this repository and drop all the plugins-visualizer\*.js files into this directory.
 * Relaunch AME and play a song, once a song is playing go to the 👤 Profile menu and click "Visualizer"
 
+## More Information
+For more information on how to build your own plugin check out: https://github.com/Apple-Music-Electron/Apple-Music-Electron/wiki/Plugins
+
 ## Credits
 Butterchurn: https://github.com/jberg/butterchurn
