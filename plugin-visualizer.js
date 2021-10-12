@@ -1,7 +1,7 @@
 /**
  * @name Visualizer
  * @author booploops
- * @description My plugin's description
+ * @description Butterchurn Visualizer for Apple Music Electron
  */
 
 class Visualizer extends AMEPluginHelper {
