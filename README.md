@@ -4,7 +4,7 @@ Butterchurn Plugin for Apple Music Electron
 
 **This plugin is not officially maintained by the Apple Music Electron team, it is simply a test of the new plugin system so your mileage with this plugin may vary.**
 
-[Download](https://github.com/booploops/AME-Butterchurn/archive/refs/heads/main.zip)
+[Download](https://github.com/booploops/AME-Butterchurn/releases/download/apple-music-electron-plugin/AME-Butterchurn-main.zip)
 
 ## Prerequsites
 * Latest commit of Apple Music Electron 3.0.0 or newer
