@@ -1,41 +1,8 @@
+// Excuse the ugliness. This plugin is ported from AME and needs some cleanup.
 var AMEx = {
     context: new AudioContext(),
     result: {},
-    filter: [],
-    EQRanges: [{
-        f: 32,
-        type: 'lowshelf'
-    }, {
-        f: 64,
-        type: 'peaking'
-    }, {
-        f: 125,
-        type: 'peaking'
-    }, {
-        f: 250,
-        type: 'peaking'
-    }, {
-        f: 500,
-        type: 'peaking'
-    }, {
-        f: 1000,
-        type: 'peaking'
-    }, {
-        f: 2000,
-        type: 'peaking'
-    }, {
-        f: 4000,
-        type: 'peaking'
-    }, {
-        f: 8000,
-        type: 'peaking'
-    }, {
-        f: 16000,
-        type: 'highshelf'
-    }]
 }
-var bassFilter
-var trebleFilter
 // Viz & EQ
 var _amOT = {
     viz: {
@@ -271,34 +238,6 @@ var _amOT = {
     },
     fInit: false,
     eqReady: false,
-    init: function (cb = function () {}) {
-        _amOT.fInit = true
-        // !!! temp, replace with better way of checking when the apple-music-player has been init
-        var searchInt = setInterval(function () {
-            if (document.getElementById("apple-music-player")) {
-                _amOT.eqReady = true
-                _amOT.amplifyMedia(document.getElementById("apple-music-player"), 0)
-                var context = AMEx.context
-                var source = AMEx.result.source
-                bassFilter = context.createBiquadFilter();
-                bassFilter.type = "lowshelf";
-                bassFilter.frequency.value = 200;
-                bassFilter.gain.value = 0
-
-                trebleFilter = context.createBiquadFilter()
-                trebleFilter.type = "highshelf"
-                trebleFilter.frequency.value = 2000
-                trebleFilter.gain.value = 0
-
-                source.connect(bassFilter)
-                bassFilter.connect(trebleFilter)
-                trebleFilter.connect(context.destination)
-                console.log("Attached EQ")
-                cb()
-                clearInterval(searchInt)
-            }
-        }, 1000)
-    },
     amplifyMedia: function (mediaElem, multiplier) {
         // needed for EQ and viz
         var context = new(window.AudioContext || window.webkitAudioContext),
@@ -368,15 +307,7 @@ var _amOT = {
         return backdrop
     }
 }
-// End Vis & EQ
 
 MusicKit.getInstance().addEventListener(MusicKit.Events.mediaElementCreated, ()=>{
     _amOT.Start()
-})
-
-// when user hits ctrl+g ToggleViz
-document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey && e.key == "g") {
-        _amOT.VizToggle()
-    }
 })
