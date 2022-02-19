@@ -9,6 +9,13 @@
 ## Prerequsites
 * Latest commit of Cider or newer
 
+## Installation
+* Download the zip file at: https://github.com/booploops/Cider-Butterchurn/releases/tag/cidermusicplugin
+* Put the Cider-Butterchurn folder into %appdata%\Cider\plugins
+ * If `plugins` does not already exist create it
+* Relaunch Cider if it is open
+* Once music is playing, press the Cider menu and click Toggle Visualizer
+
 ## More Information
 For more information on how to build your own plugin check out: https://github.com/ciderapp/Cider/wiki/Plugin-Development
 
