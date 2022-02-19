@@ -10,7 +10,7 @@
 * Latest commit of Cider or newer
 
 ## Installation
-* Download the zip file at: https://github.com/booploops/Cider-Butterchurn/releases/tag/cidermusicplugin
+* Download the zip file at: https://github.com/booploops/Cider-Butterchurn/releases/download/cidermusicplugin/Cider-Butterchurn.zip
 * Put the Cider-Butterchurn folder into %appdata%\Cider\plugins
  * If `plugins` does not already exist create it
 * Relaunch Cider if it is open
