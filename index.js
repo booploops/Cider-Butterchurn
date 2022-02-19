@@ -1,5 +1,4 @@
 const path = require("path")
-const {ipcMain} = require("electron")
 
 
 module.exports = class ButterchurnVisualizer {
@@ -11,20 +10,10 @@ module.exports = class ButterchurnVisualizer {
     // Called when the backend is ready
     onReady(win) {
         console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
-        console.log("=== Visualizer Loaded ===")
     }
 
     // Called when the renderer is ready (app.init())
     onRendererReady(win) {
-        console.debug("Renderer Ready Called")
         // Load the frontend plugin
         this.env.utils.loadJSFrontend(path.join(this.env.dir, "index.frontend.js"))
         this.env.utils.loadJSFrontend(path.join(this.env.dir, "plugin-visualizer-butterchurn.js"))
