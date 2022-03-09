@@ -18,8 +18,6 @@ module.exports = class ButterchurnVisualizer {
         this.env.utils.loadJSFrontend(path.join(this.env.dir, "index.frontend.js"))
         this.env.utils.loadJSFrontend(path.join(this.env.dir, "plugin-visualizer-butterchurn.js"))
         this.env.utils.loadJSFrontend(path.join(this.env.dir, "plugin-visualizer-butterchurnExtraImages.js"))
-        this.env.utils.loadJSFrontend(path.join(this.env.dir, "plugin-visualizer-butterchurnPresets.js"))
-        this.env.utils.loadJSFrontend(path.join(this.env.dir, "plugin-visualizer-butterchurnPresetsExtra.js"))
-        this.env.utils.loadJSFrontend(path.join(this.env.dir, "plugin-visualizer-butterchurnPresetsExtra2.js"))
+        this.env.utils.loadJSFrontend(path.join(this.env.dir, "full-presets.js"))
     }
 }

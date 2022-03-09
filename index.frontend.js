@@ -204,9 +204,7 @@ var _amOT = {
             })
             // _amOT.viz.presets = butterchurnPresets.getPresets();
             _amOT.viz.presets = Object.assign({},
-                butterchurnPresets.getPresets(),
-                butterchurnPresetsExtra.getPresets(),
-                butterchurnPresetsExtra2.getPresets());
+                importedPresets.getPresets());
             _amOT.viz.preset = _amOT.viz.presets[localStorage.getItem("bc-selected")];
             document.body.appendChild(_amOT.viz.canvas)
             _amOT.viz.visualizer = butterchurn.default.createVisualizer(AMEx.context, _amOT.viz.canvas, {
