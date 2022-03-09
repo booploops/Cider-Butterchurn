@@ -21,3 +21,4 @@ For more information on how to build your own plugin check out: https://github.c
 
 ## Credits
 Butterchurn: https://github.com/jberg/butterchurn
+Butterchurn Presets: https://github.com/jberg/butterchurn-presets
