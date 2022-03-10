@@ -4,7 +4,7 @@
 
 # Butterchurn Plugin for [Cider](https://github.com/ciderapp/Cider)
 
-**This plugin is not officially maintained by the Cider Collective team, it is simply a test of the new plugin system so your mileage with this plugin may vary.**
+**Requires Advanced Audio Functionality Enabled**
 
 ## Prerequsites
 * Latest commit of Cider `develop` branch
