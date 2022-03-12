@@ -13,7 +13,7 @@ var _amOT = {
         renderSize: [1600, 1200],
         running: false,
         ready: false,
-        lowered: false,
+        chromeVisible: false,
         scale: 1.0,
         canvas: document.createElement("canvas"),
         lyrics: document.createElement("div")
@@ -25,6 +25,7 @@ var _amOT = {
             _amOT.VizToggle()
         }
         CiderFrontAPI.AddMenuEntry(menuEntry)
+        
     },
     VizToggle: function () {
         if(CiderAudio.context) {
@@ -41,6 +42,8 @@ var _amOT = {
     StopViz: function () {
         _amOT.viz.canvas.style.display = "none"
         _amOT.viz.running = false
+        _amOT.SetAppChromeVisibility(false)
+        document.querySelector("#app-main").removeAttribute("vis-style")
     },
     ToggleFullscreen: function () {
         var element = document.body
@@ -142,6 +145,27 @@ var _amOT = {
         _amOT.viz.canvas.height = window.innerHeight * parseFloat(localStorage.getItem("bc-scale"))
         _amOT.viz.visualizer.setRendererSize(window.innerWidth * parseFloat(localStorage.getItem("bc-scale")), window.innerHeight * parseFloat(localStorage.getItem("bc-scale")))
     },
+    SetAppChromeVisibility(visible) {
+        document.querySelectorAll(".app-chrome").forEach(function (b, a) {
+            if (!visible) {
+                _amOT.viz.chromeVisible = false
+                b.style.zIndex = ""
+                b.style.backdropFilter = ""
+            } else {
+                _amOT.viz.chromeVisible = true
+                b.style.zIndex = "9999"
+                b.style.backdropFilter = "blur(16px)"
+            }
+        })
+    },
+    ToggleAppChromeVisibility() {
+        if (_amOT.viz.chromeVisible) {
+            _amOT.SetAppChromeVisibility(false)
+        }
+        else {
+            _amOT.SetAppChromeVisibility(true)
+        }
+    },
     StartViz: function () {
         if (!localStorage.getItem("bc-notice")) {
             let about = document.createElement("p")
@@ -162,7 +186,7 @@ var _amOT = {
         _amOT.viz.scale = parseFloat(localStorage.getItem("bc-scale"))
         _amOT.viz.running = true
         _amOT.viz.canvas.style.display = ""
-
+        document.querySelector("#app-main").setAttribute("vis-style", 1)
         if (!_amOT.viz.ready) {
             window.onresize = function (event) {
                 _amOT.RedrawViz()
@@ -177,23 +201,9 @@ var _amOT = {
             _amOT.viz.canvas.style.bottom = "0px"
             _amOT.viz.canvas.style.left = "0px"
             _amOT.viz.canvas.style.transition = "bottom 0.5s ease 0s, left 0.5s ease 0s"
-            _amOT.viz.lowered = false
+            _amOT.viz.chromeVisible = false
             _amOT.viz.canvas.addEventListener("click", function () {
-                if (!_amOT.viz.lowered) {
-                    _amOT.viz.lowered = true
-                    setTimeout(function () {
-                        // document.getElementsByClassName("web-chrome-playback-controls__up-next-btn")[0].dispatchEvent(new Event("click"))
-                    }, 500)
-                    _amOT.viz.canvas.style.bottom = "-55px"
-                    // _amOT.viz.canvas.style.left = "-300px"
-                    _amOT.viz.canvas.style.cursor = ""
-                } else {
-                    _amOT.viz.lowered = false
-                    // document.getElementsByClassName("web-chrome-playback-controls__up-next-btn")[0].dispatchEvent(new Event("click"))
-                    _amOT.viz.canvas.style.bottom = "0"
-                    _amOT.viz.canvas.style.left = "0"
-                    _amOT.viz.canvas.style.cursor = "none"
-                }
+                _amOT.ToggleAppChromeVisibility()
             })
             _amOT.viz.canvas.addEventListener("dblclick", function () {
                 _amOT.VizConfig()
@@ -307,5 +317,6 @@ var _amOT = {
 }
 
 MusicKit.getInstance().addEventListener(MusicKit.Events.mediaElementCreated, ()=>{
+    CiderFrontAPI.StyleSheets.Add("./plugins/cider-butterchurn/visstyle.less")
     _amOT.Start()
 })
