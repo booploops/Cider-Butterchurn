@@ -58,14 +58,22 @@ var _amOT = {
             }
         }
     },
-    VizConfig: function () {
+    VizConfig: async function () {
+        let favorites = await CiderCache.getCache("viz-favorites")
+        if(!favorites) {
+            favorites = []
+        }
         let content = document.createElement("div")
         let preLabel = document.createElement("label")
         let preSelect = document.createElement("select")
+        let favLabel = document.createElement("label")
+        let favSelect = document.createElement("select")
         let fullscreenBtn = document.createElement("button")
         let closeVizBtn = document.createElement("button")
         let scaleInput = document.createElement("input")
         let scaleLabel = document.createElement("label")
+        let addFavoriteBtn = document.createElement("button")
+        let removeFavoriteBtn = document.createElement("button")
 
         scaleLabel.innerHTML = "Render Scale: <br>"
         scaleLabel.appendChild(scaleInput)
@@ -101,6 +109,7 @@ var _amOT = {
 
         closeVizBtn.style.margin = "12px 0px 0px 0px"
 
+        // Presets
         preLabel.innerHTML = "Preset: <br>"
         preLabel.appendChild(preSelect)
         Object.keys(_amOT.viz.presets).forEach(function (b, a) {
@@ -116,6 +125,7 @@ var _amOT = {
         preSelect.style.outline = "none!important"
         preSelect.style.fontSize = "18px"
         preSelect.style.width = "100%"
+        preSelect.style.height = "200px";
         preSelect.value = localStorage.getItem("bc-selected")
         preSelect.addEventListener("change", function () {
             _amOT.viz.visualizer.loadPreset(_amOT.viz.presets[this.value])
@@ -123,7 +133,71 @@ var _amOT = {
             localStorage.setItem("bc-selected", this.value)
         })
 
-        content.appendChild(preLabel)
+        // Favorites
+        favLabel.innerHTML = "Favorites: <br>"
+        favLabel.appendChild(favSelect)
+        function drawFavorites() {
+            favSelect.innerHTML = ""
+            favorites.forEach(function (b, a) {
+                let opt = document.createElement("option")
+                opt.innerHTML = b
+                opt.value = b
+                favSelect.appendChild(opt)
+            });
+        }
+        drawFavorites()
+
+        favLabel.style.width = "100%"
+        favSelect.size = 20
+        favSelect.style.fontFamily = "inherit"
+        favSelect.style.outline = "none!important"
+        favSelect.style.fontSize = "18px"
+        favSelect.style.width = "100%"
+        favSelect.style.height = "200px";
+        favSelect.value = localStorage.getItem("bc-selected")
+        favSelect.addEventListener("change", function () {
+            _amOT.viz.visualizer.loadPreset(_amOT.viz.presets[this.value])
+            //_amOT.viz.presetName = this.value
+            localStorage.setItem("bc-selected", this.value)
+        })
+
+        addFavoriteBtn.classList.add("md-btn")
+        addFavoriteBtn.classList.add("md-btn-small")
+        addFavoriteBtn.style.width = "100%"
+        addFavoriteBtn.innerText = "Add Favorite"
+        addFavoriteBtn.addEventListener("click", ()=>{
+            favorites.push(localStorage.getItem("bc-selected"))
+            drawFavorites()
+            CiderCache.putCache("viz-favorites", favorites)
+        })
+
+        removeFavoriteBtn.classList.add("md-btn")
+        removeFavoriteBtn.classList.add("md-btn-small")
+        removeFavoriteBtn.style.width = "100%"
+        removeFavoriteBtn.innerText = "Remove Favorite"
+        removeFavoriteBtn.addEventListener("click", ()=>{
+            favorites.splice(favorites.indexOf(favSelect.value), 1)
+            drawFavorites()
+            CiderCache.putCache("viz-favorites", favorites)
+        })
+
+        let grid = {
+            row: document.createElement("div"),
+            col1: document.createElement("div"),
+            col2: document.createElement("div"),
+        }
+        grid.row.classList.add("row")
+        grid.col1.classList.add("col-md-6")
+        grid.col2.classList.add("col-md-6")
+
+        grid.row.appendChild(grid.col1)
+        grid.row.appendChild(grid.col2)
+        grid.col1.appendChild(preLabel)
+        grid.col1.appendChild(addFavoriteBtn)
+        grid.col2.appendChild(favLabel)
+        grid.col2.appendChild(removeFavoriteBtn)
+
+        content.appendChild(grid.row)
         content.appendChild(scaleLabel)
         content.appendChild(document.createElement("br"))
         content.appendChild(fullscreenBtn)
@@ -283,7 +357,7 @@ var _amOT = {
         backdrop.style.alignItems = "center"
         backdrop.style.justifyContent = "center"
         let win = document.createElement("div")
-        win.style.width = "300px"
+        win.style.width = "500px"
         win.style.background = "var(--bs-gray-dark)"
         win.style.color = "var(--textColor)"
         win.style.zIndex = 10000
