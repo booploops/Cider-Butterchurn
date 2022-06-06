@@ -40,6 +40,10 @@ var _amOT = {
         }
     },
     StopViz: function () {
+        chromeBottom.style.position = ""
+        chromeBottom.style.bottom = ""
+        chromeBottom.style.left = ""
+        appNavigation.style.marginTop = ""
         _amOT.viz.canvas.style.display = "none"
         _amOT.viz.running = false
         _amOT.SetAppChromeVisibility(false)
@@ -257,6 +261,13 @@ var _amOT = {
             localStorage.setItem("bc-scale", "1.0")
         }
 
+        const appNavigation = document.querySelector(".app-navigation")
+        appNavigation.style.marginTop = "var(--chromeHeight1)"
+        const chromeBottom = document.querySelector(".app-chrome.chrome-bottom")
+        chromeBottom.style.position = "fixed"
+        chromeBottom.style.bottom = "0px"
+        chromeBottom.style.left = "0px"
+
         _amOT.viz.scale = parseFloat(localStorage.getItem("bc-scale"))
         _amOT.viz.running = true
         _amOT.viz.canvas.style.display = ""
@@ -297,7 +308,8 @@ var _amOT = {
                 mesh_width: 64,
                 mesh_height: 48,
                 pixelRatio: window.devicePixelRatio || 1,
-                textureRatio: 1
+                textureRatio: 1,
+                fps: 2
             });
 
             _amOT.viz.visualizer.loadExtraImages(butterchurnExtraImages.default.getImages());
