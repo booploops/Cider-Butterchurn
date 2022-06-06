@@ -40,6 +40,8 @@ var _amOT = {
         }
     },
     StopViz: function () {
+        const appNavigation = document.querySelector(".app-navigation")
+        const chromeBottom = document.querySelector(".app-chrome.chrome-bottom")
         chromeBottom.style.position = ""
         chromeBottom.style.bottom = ""
         chromeBottom.style.left = ""
