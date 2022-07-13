@@ -42,9 +42,11 @@ var _amOT = {
     StopViz: function () {
         const appNavigation = document.querySelector(".app-navigation")
         const chromeBottom = document.querySelector(".app-chrome.chrome-bottom")
-        chromeBottom.style.position = ""
-        chromeBottom.style.bottom = ""
-        chromeBottom.style.left = ""
+		if(chromeBottom) {
+			chromeBottom.style.position = ""
+			chromeBottom.style.bottom = ""
+			chromeBottom.style.left = ""
+		}
         appNavigation.style.marginTop = ""
         _amOT.viz.canvas.style.display = "none"
         _amOT.viz.running = false
@@ -266,9 +268,11 @@ var _amOT = {
         const appNavigation = document.querySelector(".app-navigation")
         appNavigation.style.marginTop = "var(--chromeHeight1)"
         const chromeBottom = document.querySelector(".app-chrome.chrome-bottom")
-        chromeBottom.style.position = "fixed"
-        chromeBottom.style.bottom = "0px"
-        chromeBottom.style.left = "0px"
+		if(chromeBottom) {
+			chromeBottom.style.position = "fixed"
+			chromeBottom.style.bottom = "0px"
+			chromeBottom.style.left = "0px"
+		}			
 
         _amOT.viz.scale = parseFloat(localStorage.getItem("bc-scale"))
         _amOT.viz.running = true
