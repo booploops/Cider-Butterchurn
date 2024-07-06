@@ -1,0 +1,10 @@
+.viz-panel {
+    select {
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+}
+
+.force-transparent {
+    background: transparent !important;
+}
