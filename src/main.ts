@@ -6,6 +6,8 @@ import config from './plugin.config.ts'
 import { _amOT } from "./imported/port.js";
 import "./imported/style.scss";
 import PluginSettings from "./components/PluginSettings.vue";
+import VizSettings from "./components/VizSettings.vue";
+import { subscribeEvent } from "./api/Events.ts";
 
 /**
  * Custom Elements that will be registered in the app
@@ -14,6 +16,10 @@ export const CustomElements
     = {
     'plugin-settings':
         defineCustomElement(PluginSettings, {
+            shadowRoot: false,
+        }),
+    'viz-settings':
+        defineCustomElement(VizSettings, {
             shadowRoot: false,
         }),
 }
@@ -29,14 +35,19 @@ export default {
      * Initial setup function that is executed when the plugin is loaded
      */
     setup() {
-        // Temp workaround
-        // @ts-ignore
-        window.__VUE_OPTIONS_API__ = true
 
         for (const [key, value] of Object.entries(CustomElements)) {
             const _key = key as keyof typeof CustomElements;
             customElements.define(customElementName(_key), value)
         }
+
+        subscribeEvent('immersive:closed', () => {
+            if (_amOT.viz.running) {
+                _amOT.StopViz();
+            }
+        
+        })
+
         addMainMenuEntry({
             label: "Open Visualizer",
             onClick() {

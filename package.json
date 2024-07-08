@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
+    "@vueuse/core": "^10.11.0",
+    "butterchurn": "^2.6.7",
+    "butterchurn-presets": "^2.4.7",
     "lodash": "^4.17.21",
     "vue": "^3.4.29"
   },
@@ -25,5 +28,8 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vue-tsc": "^2.0.21",
     "yaml": "^2.4.5"
-  }
+  },
+  "trustedDependencies": [
+    "core-js"
+  ]
 }

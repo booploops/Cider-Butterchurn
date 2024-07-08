@@ -27,9 +27,9 @@ This plugin has been ported from Apple Music Electron to Cider 1.x to Cider 2.x.
 The code around this is of *questionable* quality.  Mainly ported as proof of concept but will be improved over time as the Cider Plugin API and this plugin matures.  As most of the code is a straight import from a JS only project a lot of TS rules have been disabled.
 
 ## Future Goals
-- Change the configuration UI to use a Vue Web Component
+✅ Change the configuration UI to use a Vue Web Component
+✅ Integrate properly with the Butterchurn NPM package
 - Properly register as an Immersive backdrop instead of overlaying on top of the existing one
-- Integrate properly with the Butterchurn NPM package
 
 
 ## Credits

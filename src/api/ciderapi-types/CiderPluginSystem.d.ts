@@ -25,4 +25,9 @@ declare namespace __PLUGINSYS__ {
     const Quasar: {
         Dialog: any;
     }
+
+    const PAPIInstance: {
+        addEventListener(event: import('./PAPIEvents').PAPIEvents, cb: (e: any) => void, opts?: Partial<{ once: boolean, passive: boolean, capture: boolean }>): void
+        removeEventListener(event: import('./PAPIEvents').PAPIEvents, cb: (e: any) => void): void
+    }
 }
