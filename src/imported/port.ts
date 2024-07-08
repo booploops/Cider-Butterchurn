@@ -93,18 +93,6 @@ export const _amOT = {
     content._props.closeFn = closeDialog;
     dialogElement.appendChild(content);
     openDialog();
-    return
-    const btwin = _amOT.popup_generic({
-      title: "Butterchurn Visualizer",
-      content: document.createElement(customElementName('viz-settings')),
-      transparentBg: true,
-      backdropStyle: {
-        justifyContent: "left",
-      },
-      windowStyle: {
-        "margin-left": "16px",
-      },
-    });
   },
   RedrawViz: function () {
     _amOT.viz.canvas.width =
@@ -216,10 +204,14 @@ export const _amOT = {
         butterchurnExtraImages.default.getImages()
       );
       _amOT.viz.visualizer.connectAudio(AMEx.result.source);
-      _amOT.viz.visualizer.loadPreset(
-        _amOT.viz.presets[localStorage.getItem("bc-selected")],
-        0.0
-      );
+      try {
+        _amOT.viz.visualizer.loadPreset(
+          _amOT.viz.presets[x],
+          0.0
+        );
+      }catch(e) {
+        console.error(e);
+      }
     }
 
     function startRenderer() {

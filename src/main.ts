@@ -73,7 +73,6 @@ export default {
 
             },
         })
-
         addImmersiveMenuEntry({
             label: "Configure Visualizer",
             onClick() {
