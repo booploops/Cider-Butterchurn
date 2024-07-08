@@ -7,6 +7,7 @@ import { importedPresets } from "./full-presets";
 // import "./plugin-visualizer-butterchurn";
 import butterchurn from "butterchurn";
 import "./plugin-visualizer-butterchurnExtraImages";
+import { createModal } from "../api/Modal";
 
 var AMEx = {
   context: new AudioContext(),
@@ -84,6 +85,15 @@ export const _amOT = {
     }
   },
   VizConfig: function() {
+    const {closeDialog, openDialog, dialogElement} = createModal({
+      escClose: true,
+    })
+    // @ts-ignore
+    const content = document.createElement(customElementName('viz-settings'));
+    content._props.closeFn = closeDialog;
+    dialogElement.appendChild(content);
+    openDialog();
+    return
     const btwin = _amOT.popup_generic({
       title: "Butterchurn Visualizer",
       content: document.createElement(customElementName('viz-settings')),

@@ -6,9 +6,13 @@ type CreateModalOptions = {
     escClose?: boolean;
     className?: BuiltInClasses[];
     noDefaultClass?: boolean;
+    element?: HTMLElement;
 }
 export function createModal(opts: CreateModalOptions) {
     const dialogElement = document.createElement("dialog");
+    if(opts.element) {
+        dialogElement.appendChild(opts.element);
+    }
     
     const openDialog = () => {
         document.body.appendChild(dialogElement);

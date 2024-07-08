@@ -2,6 +2,10 @@
 import { _amOT } from "../imported/port";
 import { useLocalStorage } from "@vueuse/core";
 
+defineProps<{
+    closeFn: () => void;
+}>();
+
 const selected = useLocalStorage<string>(
   "bc-selected",
   "Flexi, martin + geiss - dedicated to the sherwin maxawow"
@@ -15,6 +19,27 @@ const renderScale = useLocalStorage<number>("bc-scale", 1);
 const favorites = useLocalStorage<string[]>("viz-favorites", []);
 const showRemove = computed(() => favorites.value.includes(selected.value));
 
+const searchAll = ref("");
+const searchFav = ref("");
+
+const presetsFiltered = computed(() => {
+    if (searchAll.value.length !== 0) {
+        return Object.keys(presets.value).filter((key) =>
+            key.toLowerCase().includes(searchAll.value.toLowerCase())
+        );
+    }
+    return Object.keys(presets.value);
+})
+
+const favoritesFiltered = computed(() => {
+    if (searchFav.value.length !== 0) {
+        return favorites.value.filter((fav) =>
+            fav.toLowerCase().includes(searchFav.value.toLowerCase())
+        );
+    }
+    return favorites.value;
+})
+
 watch(selected, (newVal) => {
   // @ts-ignore
   _amOT.viz.visualizer.loadPreset(_amOT.viz.presets[newVal]);
@@ -23,10 +48,6 @@ watch(selected, (newVal) => {
 watch(renderScale, () => {
   _amOT.RedrawViz();
 });
-
-function fullscreen() {
-  document.documentElement.requestFullscreen();
-}
 
 function addToFavorites() {
   if (!favorites.value.includes(selected.value)) {
@@ -43,13 +64,15 @@ function removeFromFavorites() {
 </script>
 
 <template>
-  <div class="plugin-base q-mt-sm">
+  <div class="plugin-base q-mt-sm viz-settings">
+
     <div class="row flex-gap-2">
       <div class="col">
         <div class="shelf-title">Available</div>
+        <input type="text" v-model="searchAll" class="full-width" placeholder="Search all..." />
         <select v-model="selected" class="options-list" size="3">
-          <option v-for="(_, index) in presets" :key="index">
-            {{ index }}
+          <option v-for="(name) in presetsFiltered" :key="name">
+            {{ name }}
           </option>
         </select>
         <button class="full-width q-my-sm" @click="addToFavorites">
@@ -58,8 +81,9 @@ function removeFromFavorites() {
       </div>
       <div class="col">
         <div class="shelf-title">Favorites</div>
+        <input type="text" v-model="searchFav" class="full-width" placeholder="Search favorites..." />
         <select v-model="selected" class="options-list" size="3">
-          <option v-for="(fav, index) in favorites" :key="index">
+          <option v-for="(fav, index) in favoritesFiltered" :key="index">
             {{ fav }}
           </option>
         </select>
@@ -86,15 +110,21 @@ function removeFromFavorites() {
     </div>
 
     <div class="row flex-gap-2 q-mt-sm">
-      <button class="full-width c-btn" @click="fullscreen">Fullscreen</button>
-      <button class="full-width c-btn" @click="_amOT.VizConfig">
+      <button class="full-width c-btn" @click="_amOT.VizToggle();closeFn()">
         Close Visualizer
+      </button>
+      <button class="full-width c-btn" @click="closeFn">
+        Done
       </button>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.viz-settings {
+    max-width: 500px;
+}
+
 .options-list {
   min-width: 0;
   width: 100%;
