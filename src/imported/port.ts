@@ -16,6 +16,7 @@ var AMEx = {
 const CiderAudio = useCiderAudio();
 // Viz & EQ
 export const _amOT = {
+  animationFrame: null,
   viz: {
     /**
      * @type {*}
@@ -125,6 +126,13 @@ export const _amOT = {
     }
   },
   StartViz: function () {
+    if (CiderAudio.context) {
+      _amOT.amplifyMedia();
+    } else {
+      alert("Audio Context not ready yet");
+      return;
+    }
+
     if (!localStorage.getItem("bc-notice")) {
       let about = document.createElement("p");
       about.innerHTML = `<b>Single click</b> - Show controls<br><b>Double click / Right click</b> - Show settings`;
@@ -206,7 +214,7 @@ export const _amOT = {
       _amOT.viz.visualizer.connectAudio(AMEx.result.source);
       try {
         _amOT.viz.visualizer.loadPreset(
-          _amOT.viz.presets[x],
+          _amOT.viz.presets[localStorage.getItem("bc-selected") || "Flexi, martin + geiss - dedicated to the sherwin maxawow"],
           0.0
         );
       }catch(e) {
@@ -216,7 +224,7 @@ export const _amOT = {
 
     function startRenderer() {
       if (_amOT.viz.running) {
-        requestAnimationFrame(() => startRenderer());
+        _amOT.animationFrame = requestAnimationFrame(() => startRenderer());
         _amOT.viz.visualizer.render();
       }
     }
@@ -225,6 +233,9 @@ export const _amOT = {
     if (!_amOT.viz.ready) {
       _amOT.viz.ready = true;
     }
+  },
+  stopRenderer() {
+    cancelAnimationFrame(_amOT.animationFrame);
   },
   fInit: false,
   eqReady: false,
@@ -298,3 +309,5 @@ export const _amOT = {
     return backdrop;
   },
 };
+
+window._amOT = _amOT;

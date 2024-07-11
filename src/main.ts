@@ -8,6 +8,9 @@ import "./imported/style.scss";
 import PluginSettings from "./components/PluginSettings.vue";
 import VizSettings from "./components/VizSettings.vue";
 import { subscribeEvent } from "./api/Events.ts";
+import { addImmersiveLayout } from "./api/ImmersiveLayout.ts";
+import CustomImmersiveLayout from "./components/CustomImmersiveLayout.vue";
+import { useMusicKit } from "./api/MusicKit.ts";
 
 /**
  * Custom Elements that will be registered in the app
@@ -22,6 +25,9 @@ export const CustomElements
         defineCustomElement(VizSettings, {
             shadowRoot: false,
         }),
+    'immersive-layout': defineCustomElement(CustomImmersiveLayout, {
+        shadowRoot: false,
+    })
 }
 
 export default {
@@ -45,7 +51,19 @@ export default {
             if (_amOT.viz.running) {
                 _amOT.StopViz();
             }
-        
+        })
+
+        // useMusicKit().addEventListener(MusicKit.Events.nowPlayingItemDidChange, (e) => {
+        //     if(!_amOT.viz.running) return;
+        //     // @ts-ignore
+        //     _amOT.viz.visualizer?.launchSongTitleAnim(e?.item?.title)
+        // })
+
+        addImmersiveLayout({
+            name: "Visualizer Centered",
+            identifier: "booploops-butterchurn-visualizer",
+            component: customElementName('immersive-layout'),
+            type: 'normal',
         })
 
         addMainMenuEntry({
