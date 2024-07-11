@@ -54,6 +54,8 @@ export const _amOT = {
     }
   },
   StopViz: function () {
+    cancelAnimationFrame(_amOT.animationFrame);
+
     // const appNavigation = document.querySelector(".app-navigation")
     // const chromeBottom = document.querySelector(".app-chrome.chrome-bottom")
     // if(chromeBottom) {
@@ -85,8 +87,8 @@ export const _amOT = {
       }
     }
   },
-  VizConfig: function() {
-    const {closeDialog, openDialog, dialogElement} = createModal({
+  VizConfig: function () {
+    const { closeDialog, openDialog, dialogElement } = createModal({
       escClose: true,
     })
     // @ts-ignore
@@ -94,6 +96,11 @@ export const _amOT = {
     content._props.closeFn = closeDialog;
     dialogElement.appendChild(content);
     openDialog();
+  },
+  Restart() {
+    // reset the visualizer
+    _amOT.StopViz();
+    _amOT.StartViz();
   },
   RedrawViz: function () {
     _amOT.viz.canvas.width =
@@ -217,7 +224,7 @@ export const _amOT = {
           _amOT.viz.presets[localStorage.getItem("bc-selected") || "Flexi, martin + geiss - dedicated to the sherwin maxawow"],
           0.0
         );
-      }catch(e) {
+      } catch (e) {
         console.error(e);
       }
     }
@@ -255,7 +262,7 @@ export const _amOT = {
   popup_generic: function ({
     title = "",
     content = document.createElement("div"),
-    closefn = function () {},
+    closefn = function () { },
     transparentBg = false,
     windowStyle = {},
     backdropStyle = {},
