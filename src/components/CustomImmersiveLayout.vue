@@ -20,7 +20,7 @@ watch(controlsOpened, (newVal) => {
 const showRightSide = ref(true);
 
 const audio = useCiderAudio();
-const unsubscribe = audio.subscribe(
+const unsubscribe: any = audio.subscribe(
   "ready",
   () => {
     if (!_amOT.viz.running) {
@@ -111,6 +111,7 @@ onUnmounted(() => {
   background: transparent;
   border: 0;
   transition: opacity 0.3s var(--ease_appleSpring);
+  margin-right: 1em;
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -128,7 +129,7 @@ onUnmounted(() => {
 .player-container {
   display: grid;
   width: 100%;
-  grid-template-columns: auto 0px 1fr 80px;
+  grid-template-columns: auto 0px 1fr auto;
   align-items: center;
   padding-left: 1em;
   padding-bottom: 1em;
@@ -144,7 +145,7 @@ onUnmounted(() => {
       padding-left 0.5s var(--ease_appleSpring);
   }
   &.is-idle {
-    grid-template-columns: auto 30px 1fr 0fr;
+    grid-template-columns: auto 30px 1fr auto;
 
     .metadata-display {
       padding-left: 1em;
@@ -247,7 +248,7 @@ onUnmounted(() => {
 :deep(.lyric-view) {
   filter: drop-shadow(0 5px 5px black);
 
-  padding-top: 38cqh;
+  padding-top: 36cqh;
   mask-image: linear-gradient(
     0deg,
     transparent 0%,

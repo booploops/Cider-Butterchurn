@@ -10,7 +10,6 @@ import VizSettings from "./components/VizSettings.vue";
 import { subscribeEvent } from "./api/Events.ts";
 import { addImmersiveLayout } from "./api/ImmersiveLayout.ts";
 import CustomImmersiveLayout from "./components/CustomImmersiveLayout.vue";
-import { useMusicKit } from "./api/MusicKit.ts";
 
 /**
  * Custom Elements that will be registered in the app
