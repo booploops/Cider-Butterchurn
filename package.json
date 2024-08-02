@@ -1,19 +1,35 @@
 {
-    "name": "cider-butterchurn",
-    "version": "1.0.2",
-    "description": "Butterchurn for Cider",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/booploops/Cider-Butterchurn.git"
-    },
-    "bugs": {
-        "url": "https://github.com/booploops/Cider-Butterchurn/issues"
-    },
-    "homepage": "https://github.com/booploops/Cider-Butterchurn#readme"
+  "name": "cider-butterchurn",
+  "version": "0.0.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@vueuse/core": "^10.11.0",
+    "butterchurn": "^2.6.7",
+    "butterchurn-presets": "^2.4.7",
+    "lodash": "^4.17.21",
+    "vue": "^3.4.29"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.6",
+    "@types/node": "^20.14.9",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "sass": "^1.77.6",
+    "typescript": "^5.2.2",
+    "unplugin-auto-import": "^0.17.6",
+    "vite": "^5.3.1",
+    "vite-plugin-css-injected-by-js": "^3.5.1",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vue-tsc": "^2.0.21",
+    "yaml": "^2.4.5"
+  },
+  "trustedDependencies": [
+    "core-js"
+  ]
 }
