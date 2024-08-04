@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare-marketplace": "tsx ./scripts/market-pack.cts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
@@ -20,7 +21,9 @@
     "@types/lodash": "^4.17.6",
     "@types/node": "^20.14.9",
     "@vitejs/plugin-vue": "^5.0.5",
+    "adm-zip": "^0.5.14",
     "sass": "^1.77.6",
+    "tsx": "^4.16.5",
     "typescript": "^5.2.2",
     "unplugin-auto-import": "^0.17.6",
     "vite": "^5.3.1",
