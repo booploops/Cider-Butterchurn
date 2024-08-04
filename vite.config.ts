@@ -34,7 +34,7 @@ export default defineConfig({
     }
   ],
   build: {
-    outDir: `dist/${config.default.identifier}`,
+    outDir: `dist/`,
     minify: 'esbuild',
     lib: {
       entry: 'src/main.ts',
