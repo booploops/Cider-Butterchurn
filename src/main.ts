@@ -1,4 +1,4 @@
-import { defineCustomElement } from "./CustomElement/apiCustomElement";
+import { defineCustomElement } from "vue";
 import { addImmersiveMenuEntry, addMainMenuEntry } from "./api/MenuEntry";
 import { PluginAPI } from "./api/PluginAPI";
 import { customElementName } from "./utils";
