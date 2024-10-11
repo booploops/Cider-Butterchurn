@@ -5,7 +5,7 @@ export default {
     identifier: 'dev.booploops.butterchurn-visualizer',
     name: 'Butterchurn Visualizer for Cider',
     description: 'Adds a visualizer to the app.',
-    version: '0.0.2',
+    version: '0.0.3',
     author: 'booploops',
     repo: 'https://github.com/booploops/Cider-Butterchurn',
     entry: {

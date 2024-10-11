@@ -1,13 +1,14 @@
 // Excuse the ugliness. This plugin is ported from AME AND Cider 1 and needs some cleanup.
 // @ts-nocheck
 
-import { useCiderAudio } from "../api/CiderAudio";
+
+import { useCiderAudio } from "@ciderapp/pluginkit";
 import { customElementName } from "../utils";
 import { importedPresets } from "./full-presets";
 // import "./plugin-visualizer-butterchurn";
 import butterchurn from "butterchurn";
 import "./plugin-visualizer-butterchurnExtraImages";
-import { createModal } from "../api/Modal";
+import { createModal } from "@ciderapp/pluginkit";
 
 var AMEx = {
   context: new AudioContext(),

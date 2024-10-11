@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CComponent from "../api/CComponent.vue";
-import { useCiderAudio } from "../api/CiderAudio.ts";
+import CComponent from "@ciderapp/pluginkit/vue/CComponent.vue";
+import { useCiderAudio } from "@ciderapp/pluginkit";
 import { _amOT } from "../imported/port";
 import { useIdle } from "@vueuse/core";
 

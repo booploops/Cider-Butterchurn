@@ -1,15 +1,14 @@
 import { defineCustomElement } from "vue";
-import { addImmersiveMenuEntry, addMainMenuEntry } from "./api/MenuEntry";
-import { PluginAPI } from "./api/PluginAPI";
-import { customElementName } from "./utils";
-import config from './plugin.config.ts'
+import { addImmersiveMenuEntry, addMainMenuEntry } from "@ciderapp/pluginkit";
+import { definePluginContext } from "@ciderapp/pluginkit";
 import { _amOT } from "./imported/port.js";
 import "./imported/style.scss";
 import PluginSettings from "./components/PluginSettings.vue";
 import VizSettings from "./components/VizSettings.vue";
-import { subscribeEvent } from "./api/Events.ts";
-import { addImmersiveLayout } from "./api/ImmersiveLayout.ts";
+import { subscribeEvent } from "@ciderapp/pluginkit";
+import { addImmersiveLayout } from "@ciderapp/pluginkit"
 import CustomImmersiveLayout from "./components/CustomImmersiveLayout.vue";
+import pluginConfig from "./plugin.config.ts";
 
 /**
  * Custom Elements that will be registered in the app
@@ -29,13 +28,9 @@ export const CustomElements
     })
 }
 
-export default {
-    name: 'Butterchurn Visualizer',
-    identifier: config.identifier,
-    /**
-     * Defining our custom settings panel element
-     */
-    SettingsElement: customElementName('plugin-settings'),
+const { plugin, setupConfig, customElementName, goToPage, useCPlugin } = definePluginContext({
+    ...pluginConfig,
+    CustomElements,
     /**
      * Initial setup function that is executed when the plugin is loaded
      */
@@ -45,6 +40,8 @@ export default {
             const _key = key as keyof typeof CustomElements;
             customElements.define(customElementName(_key), value)
         }
+
+        this.SettingsElement = customElementName('plugin-settings');
 
         subscribeEvent('immersive:closed', () => {
             if (_amOT.viz.running) {
@@ -98,4 +95,14 @@ export default {
         })
 
     },
-} as PluginAPI
+})
+
+/**
+ * Exporting the plugin and functions
+ */
+export { setupConfig, customElementName, goToPage, useCPlugin };
+
+/**
+ * Exporting the plugin, Cider will use this to load the plugin
+ */
+export default plugin;
