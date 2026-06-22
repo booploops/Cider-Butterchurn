@@ -40,12 +40,43 @@ function showTabs() {
   document.querySelector(".immersive-tabs")?.classList.remove("hidden");
 }
 
+function getBlurmap() {
+  return document.querySelector(".blurmap") as HTMLDivElement;
+}
+
+let blurmapRafId: number | null = null;
+
+function waitForBlurmap(
+  callback: (blurmap: HTMLDivElement) => void,
+  attempts = 120
+) {
+  const blurmap = getBlurmap();
+  if (blurmap) {
+    callback(blurmap);
+    return;
+  }
+
+  if (attempts <= 0) {
+    return;
+  }
+
+  blurmapRafId = requestAnimationFrame(() => {
+    waitForBlurmap(callback, attempts - 1);
+  });
+}
+
 onMounted(() => {
   document.querySelector(".player-modal")?.classList.add("force-transparent");
-  document.querySelector(".blurmap")?.classList.add("hidden");
+  waitForBlurmap((blurmap) => {
+    blurmap.style.display = "none";
+  });
 });
 
 onUnmounted(() => {
+  if (blurmapRafId !== null) {
+    cancelAnimationFrame(blurmapRafId);
+  }
+
   unsubscribe();
   if (_amOT.viz.running) {
     _amOT.StopViz();
@@ -53,7 +84,9 @@ onUnmounted(() => {
   document
     .querySelector(".player-modal")
     ?.classList.remove("force-transparent");
-  document.querySelector(".blurmap")?.classList.remove("hidden");
+  const blurmap = getBlurmap();
+  blurmap?.style.removeProperty("display");
+  blurmap?.classList.remove("hidden");
 });
 </script>
 
