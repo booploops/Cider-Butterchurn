@@ -33,6 +33,81 @@ export const _amOT = {
     scale: 1.0,
     canvas: document.createElement("canvas"),
     lyrics: document.createElement("div"),
+    shuffleTimer: null,
+  },
+  DEFAULT_PRESET: "Flexi, martin + geiss - dedicated to the sherwin maxawow",
+  SHUFFLE_BLEND_SECONDS: 2.0,
+  SHUFFLE_MIN_SECONDS: 5,
+  SHUFFLE_MAX_SECONDS: 3600,
+  SHUFFLE_DEFAULT_SECONDS: 30,
+  /** True only for a real preset name (own property, never a prototype key like "constructor"). */
+  IsKnownPreset(name) {
+    return (
+      typeof name === "string" &&
+      Object.prototype.hasOwnProperty.call(_amOT.viz.presets, name)
+    );
+  },
+  /** Read the favorites list written by the settings panel (vueuse stores it as JSON). */
+  GetFavorites() {
+    try {
+      const favs = JSON.parse(localStorage.getItem("viz-favorites") || "[]");
+      return Array.isArray(favs) ? favs.filter((f) => _amOT.IsKnownPreset(f)) : [];
+    } catch {
+      return [];
+    }
+  },
+  ShuffleEnabled() {
+    return localStorage.getItem("bc-shuffle") === "true";
+  },
+  /** Clamp an interval (seconds) to a sane, finite range. */
+  ClampShuffleSeconds(value) {
+    const secs = typeof value === "number" ? value : parseFloat(value);
+    if (!Number.isFinite(secs)) return _amOT.SHUFFLE_DEFAULT_SECONDS;
+    return Math.min(_amOT.SHUFFLE_MAX_SECONDS, Math.max(_amOT.SHUFFLE_MIN_SECONDS, secs));
+  },
+  ShuffleIntervalMs() {
+    return _amOT.ClampShuffleSeconds(localStorage.getItem("bc-shuffle-interval") || "") * 1000;
+  },
+  /** Load a preset by name and broadcast the change so the settings UI can show it. */
+  LoadPresetByName(name, blend = 0.0) {
+    if (!_amOT.IsKnownPreset(name) || !_amOT.viz.visualizer) return false;
+    const preset = _amOT.viz.presets[name];
+    try {
+      _amOT.viz.visualizer.loadPreset(preset, blend);
+    } catch (e) {
+      console.error("[butterchurn] failed to load preset", name, e);
+      return false;
+    }
+    // Only record the new preset once it has actually loaded.
+    _amOT.viz.preset = preset;
+    _amOT.viz.presetName = name;
+    window.dispatchEvent(new CustomEvent("bc-preset-changed", { detail: name }));
+    return true;
+  },
+  /** Pick a random favorite different from the current one and load it. No-op if nothing else to show. */
+  ShuffleNext() {
+    const pool = _amOT.GetFavorites().filter((f) => f !== _amOT.viz.presetName);
+    if (pool.length === 0) return false;
+    const next = pool[Math.floor(Math.random() * pool.length)];
+    return _amOT.LoadPresetByName(next, _amOT.SHUFFLE_BLEND_SECONDS);
+  },
+  /** (Re)start the shuffle timer according to the current settings. */
+  UpdateShuffle() {
+    _amOT.StopShuffle();
+    if (!_amOT.viz.running || !_amOT.ShuffleEnabled()) return;
+    _amOT.viz.shuffleTimer = setInterval(() => {
+      try {
+        _amOT.ShuffleNext();
+      } catch (e) {
+        console.error("[butterchurn] shuffle tick failed", e);
+      }
+    }, _amOT.ShuffleIntervalMs());
+  },
+  StopShuffle() {
+    if (_amOT.viz.shuffleTimer !== null) {
+      clearInterval(_amOT.viz.shuffleTimer);
+      _amOT.viz.shuffleTimer = null;
+    }
   },
   Start() {
     // const menuEntry = new CiderFrontAPI.Objects.MenuEntry()
@@ -65,6 +140,7 @@ export const _amOT = {
     // 	chromeBottom.style.left = ""
     // }
     // appNavigation.style.marginTop = ""
+    _amOT.StopShuffle();
     _amOT.viz.canvas.style.display = "none";
     _amOT.viz.running = false;
     // document.querySelector("#app-main").removeAttribute("vis-style")
@@ -200,7 +276,6 @@ export const _amOT = {
       });
       // _amOT.viz.presets = butterchurnPresets.getPresets();
       _amOT.viz.presets = Object.assign({}, importedPresets.getPresets());
-      _amOT.viz.preset = _amOT.viz.presets[localStorage.getItem("bc-selected")];
       document.body.appendChild(_amOT.viz.canvas);
       _amOT.viz.visualizer = butterchurn.createVisualizer(
         AMEx.context,
@@ -221,13 +296,25 @@ export const _amOT = {
       );
       _amOT.viz.visualizer.connectAudio(AMEx.result.source);
       try {
-        _amOT.viz.visualizer.loadPreset(
-          _amOT.viz.presets[localStorage.getItem("bc-selected") || "Flexi, martin + geiss - dedicated to the sherwin maxawow"],
-          0.0
-        );
+        // Fall back to the default if the stored pick is stale or invalid,
+        // so the renderer is never left on butterchurn's blank preset.
+        if (!_amOT.LoadPresetByName(localStorage.getItem("bc-selected"), 0.0)) {
+          _amOT.LoadPresetByName(_amOT.DEFAULT_PRESET, 0.0);
+        }
       } catch (e) {
         console.error(e);
       }
+    }
+
+    // In shuffle mode, start on a random favorite and begin cycling.
+    // Never let a bad favorites entry abort StartViz after the canvas is shown.
+    try {
+      if (_amOT.ShuffleEnabled()) {
+        _amOT.ShuffleNext();
+      }
+      _amOT.UpdateShuffle();
+    } catch (e) {
+      console.error("[butterchurn] shuffle start failed", e);
     }
 
     function startRenderer() {

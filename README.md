@@ -8,6 +8,10 @@
 
 ⚠️ **Requires Cider Audio Enabled**
 
+## Shuffle favorites
+
+In the visualizer settings, "Preset Mode" lets you stay on the selected preset (the default) or shuffle through your favorites. You can set how many seconds each preset stays up, skip ahead with "Next Favorite", and see which preset is currently showing.
+
 ## Available Commands
 - `npm run dev` - Start development server, Cider can then listen to this server when you select "Enable Vite" from the main menu
 - `npm run build` - Build the plugin to `dist/dev.booploops.butterchurn-visualizer/`
